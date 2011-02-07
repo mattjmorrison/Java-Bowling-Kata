@@ -8,46 +8,49 @@ public class BowlingGameTests {
     private BowlingGame game;
 
     @Before
-    public void setUp(){
-        this.game = new BowlingGame();
+    public void setUp() throws Exception {
+        game = new BowlingGame();
     }
 
-    public void rollMany(int rolls, int pins){
+    private void rollMany(int rolls, int pins) {
         for (int roll=0;roll<rolls;roll++){
             game.roll(pins);
         }
     }
 
     @Test
-    public void testGutterGame(){
-        this.rollMany(20, 0);
+    public void testJudysGame(){
+        rollMany(20, 0);
         assertEquals(0, game.get_score());
     }
 
     @Test
-    public void testAllOnes(){
-        this.rollMany(20, 1);
+    public void testAllOnesGame(){
+        rollMany(20, 1);
         assertEquals(20, game.get_score());
     }
 
     @Test
     public void testOneSpare(){
-        this.rollMany(3, 5);
-        this.rollMany(17, 0);
-        assertEquals(20, game.get_score());
+        game.roll(5);
+        game.roll(5);
+        game.roll(3);
+        rollMany(17, 0);
+        assertEquals(16, game.get_score());
     }
 
     @Test
-    public void testOneStrike(){
-        this.game.roll(10);
-        this.rollMany(2, 1);
-        this.rollMany(17, 0);
-        assertEquals(14, this.game.get_score());
+    public void testFirstRollStrike(){
+        game.roll(10);
+        game.roll(5);
+        game.roll(3);
+        rollMany(16, 0);
+        assertEquals(26, game.get_score());
     }
 
     @Test
-    public void testPerfectGame(){
-        this.rollMany(12, 10);
-        assertEquals(300, this.game.get_score());
+    public void testBriansPerfectPerfectGameGame(){
+        rollMany(12,10);
+        assertEquals(300,game.get_score());
     }
 }

@@ -4,56 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BowlingGame {
-    private List<Integer> pins = new ArrayList<Integer>();
+    private List<Integer> game = new ArrayList<Integer>();
+    private int EXPECTED_ROLLS = 20;
 
     public int get_score() {
-        int score = 0;
-
-        int frame = 0;
-        while(frame < 10){
-            score += pins.get(frame);
-
-            if (is_strike(frame)){
-                score += get_strike_bonus(frame);
+        int score=0;
+        int roll=0;
+        for(int i=0;i<10;i++) {
+            score +=game.get(roll);
+            score +=game.get(roll+1);
+            if(game.get(roll)==10) {
+                score += game.get(roll+2);
+            } else {
+                if(game.get(roll) + game.get(roll+1) == 10) {
+                    //previous frame was a spare
+                    score += game.get(roll+2);
+                }
+                roll++;
             }
-            else {
-                score = get_non_strike_frame_total(score, frame);
-                frame++;
-            }
-            frame++;
+            roll++;
+            System.out.println("score="+score);
         }
         return score;
-    }
-
-    private int get_non_strike_frame_total(int score, int frame) {
-        score += get_second_roll_of_frame(frame);
-        if (is_spare(frame)){
-            score += get_spare_bonus(frame);
-        }
-        return score;
-    }
-
-    private Integer get_second_roll_of_frame(int frame) {
-        return pins.get(frame + 1);
-    }
-
-    private boolean is_spare(int frame) {
-        return pins.get(frame) + pins.get(frame + 1) == 10;
-    }
-
-    private boolean is_strike(int frame) {
-        return pins.get(frame) == 10;
-    }
-
-    private Integer get_spare_bonus(int frame) {
-        return pins.get(frame + 2);
-    }
-
-    private int get_strike_bonus(int frame) {
-        return pins.get(frame + 1) + pins.get(frame + 2);
     }
 
     public void roll(int pins) {
-        this.pins.add(pins);
+        game.add(pins);
     }
 }
